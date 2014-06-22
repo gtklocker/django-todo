@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset='utf-8'>
+        <title>Status report</title>
+        <style>
+            li.completed {
+                text-decoration: line-through;
+            }
+            ul > li > form {
+                display: inline;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Status report</h1>
+        <ul>
+        {% for item in items %}
+            <li class='{% if item.completed %}completed{% endif %}'>
+                {{ item.title }}
+                <form action='{% url 'todo.views.complete_item' item.id %}' method='post'>
+                    {% csrf_token %}
+                    <input type='submit' value='{% if item.completed %}Start again{% else %}Complete{% endif %}' />
+                </form>
+            </li>
+        {% endfor %}
+            <li>
+                <form action='{% url 'todo.views.add_item' %}' method='post'>
+                    {% csrf_token %}
+                    <input type='text' name='title' placeholder='Add a new task' />
+                    <input type='submit' value='Add' />
+                </form>
+            </li>
+        </ul>
+    </body>
+</html>
