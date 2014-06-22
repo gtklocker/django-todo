@@ -3,9 +3,22 @@
     <head>
         <meta charset='utf-8'>
         <title>Status report</title>
+        {% load bootstrap3 %}
+        {% bootstrap_css %}
+        {% bootstrap_javascript %}
+
         <style>
-            li.completed {
+            li {
+                list-style: none;
+            }
+            li.completed > span {
                 text-decoration: line-through;
+            }
+            li.item {
+                margin: 5px 0;
+            }
+            li.item > span {
+                margin-top: 5px;
             }
             ul > li > form {
                 display: inline;
@@ -13,24 +26,34 @@
         </style>
     </head>
     <body>
-        <h1>Status report</h1>
-        <ul>
-        {% for item in items %}
-            <li class='{% if item.completed %}completed{% endif %}'>
-                {{ item.title }}
-                <form action='{% url 'todo.views.complete_item' item.id %}' method='post'>
+        <div class='container'>
+            {% bootstrap_messages %}
+            <h1>Tasks</h1>
+
+
+            <div class='row center-block'>
+                <form action='{% url 'todo.views.add_item' %}' method='post' class='form-inline'>
                     {% csrf_token %}
-                    <input type='submit' value='{% if item.completed %}Start again{% else %}Complete{% endif %}' />
+                    <div class='form-group'>
+                        <input type='text' name='title' placeholder='Add a new task' class='form-control' />
+                    </div>
                 </form>
-            </li>
-        {% endfor %}
-            <li>
-                <form action='{% url 'todo.views.add_item' %}' method='post'>
-                    {% csrf_token %}
-                    <input type='text' name='title' placeholder='Add a new task' />
-                    <input type='submit' value='Add' />
-                </form>
-            </li>
-        </ul>
+            </div>
+            <ul>
+            {% for item in items %}
+                <li class='item {% if item.completed %}completed{% endif %} row'>
+                    <span class='col-md-8'>{{ item.title }}</span>
+                    <div class='col-md-4'>
+                        <form action='{% url 'todo.views.complete_item' item.id %}' method='post' class='col-md-2'>
+                            {% csrf_token %}
+                            <button type='submit' class='btn btn-success btn-sm' />
+                                {% bootstrap_icon 'ok' %}
+                            </button>
+                        </form>
+                    </div>
+                </li>
+            {% endfor %}
+            </ul>
+        </div>
     </body>
 </html>
