@@ -24,3 +24,9 @@ def add_item(request):
     else:
         item.save()
         return HttpResponseRedirect(reverse('todo.views.index'))
+
+def delete_item(request, item_id):
+    item = get_object_or_404(Item, pk=item_id)
+    item.delete()
+
+    return HttpResponseRedirect(reverse('todo.views.index'))

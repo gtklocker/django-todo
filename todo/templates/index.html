@@ -50,6 +50,12 @@
                                 {% bootstrap_icon 'ok' %}
                             </button>
                         </form>
+                        <form action='{% url 'todo.views.delete_item' item.id %}' method='post' class='col-md-2'>
+                            {% csrf_token %}
+                            <button type='submit' class='btn btn-danger btn-sm' />
+                                {% bootstrap_icon 'remove' %}
+                            </button>
+                        </form>
                     </div>
                 </li>
             {% endfor %}
